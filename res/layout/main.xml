@@ -7,13 +7,36 @@
     <TextView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="Hello World, Main"
+            android:text="MyDiary"
     />
-    <TextView
+    <EditText
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="write something"
-            android:id="@+id/txtBox" android:layout_gravity="center_horizontal" android:layout_weight="0.04"/>
+            android:id="@+id/txt_note_id" android:layout_gravity="center_horizontal"
+            android:layout_weight="0.04"
+            android:layout_marginRight="100dp"
+            android:layout_marginTop="30dp"/>
+    <!--<EditText-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:id="@+id/textTitle"/>-->
+    <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/txt_note" android:layout_gravity="center_horizontal" android:layout_weight="0.56"/>
+    <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Save note"
+            android:id="@+id/btnSubmit"
+            android:onClick=""
+            android:layout_marginLeft="20dp"/>
+    <ListView
+            android:layout_width="match_parent"
+            android:layout_height="197dp"
+            android:id="@+id/note_list"
+    />
 </LinearLayout>
 
