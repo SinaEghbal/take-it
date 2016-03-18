@@ -13,19 +13,21 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="write something"
+            android:text=""
+            android:hint="Title"
             android:id="@+id/txt_note_id" android:layout_gravity="center_horizontal"
             android:layout_weight="0.04"
             android:layout_marginRight="100dp"
             android:layout_marginTop="30dp"/>
-    <!--<EditText-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:id="@+id/textTitle"/>-->
     <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/txt_note" android:layout_gravity="center_horizontal" android:layout_weight="0.56"/>
+            android:id="@+id/txt_note"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text=""
+            android:hint="Note itself"
+            android:layout_gravity="center_horizontal"
+            android:layout_weight="0.56"/>
     <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

@@ -1,4 +1,4 @@
-package com.comp2100.MyDiary;
+package com.comp2100.MyDiary.db;
 
 import android.provider.BaseColumns;
 
