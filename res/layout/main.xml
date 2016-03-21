@@ -4,18 +4,18 @@
               android:layout_width="fill_parent"
               android:layout_height="fill_parent"
               android:weightSum="1">
-    <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="MyDiary"
-    />
+    <!--<TextView-->
+            <!--android:layout_width="fill_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="MyDiary"-->
+    <!--/>-->
     <EditText
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text=""
             android:hint="Title"
-            android:id="@+id/txt_note_id" android:layout_gravity="center_horizontal"
+            android:id="@+id/txt_note_title" android:layout_gravity="center_horizontal"
             android:layout_weight="0.04"
             android:layout_marginRight="100dp"
             android:layout_marginTop="30dp"/>
@@ -28,13 +28,25 @@
             android:hint="Note itself"
             android:layout_gravity="center_horizontal"
             android:layout_weight="0.56"/>
-    <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Save note"
-            android:id="@+id/btnSubmit"
-            android:onClick=""
-            android:layout_marginLeft="20dp"/>
+    <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content">
+        <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Save note"
+                android:id="@+id/btnSubmit"
+                android:onClick="add"
+                android:layout_marginLeft="20dp"/>
+        <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Cancel"
+                android:id="@+id/btnCancel"
+                android:layout_gravity="right"
+                android:layout_marginLeft="2dp"
+                android:layout_toRightOf="@+id/btnSubmit"
+                android:onClick="cancel"/>
+    </LinearLayout>
+
     <ListView
             android:layout_width="match_parent"
             android:layout_height="197dp"

@@ -36,7 +36,6 @@ public class NoteDBHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(SQL_CREATE_ENTRIES);
-        System.out.println("db created");
     }
 
     @Override
@@ -48,7 +47,7 @@ public class NoteDBHelper extends SQLiteOpenHelper {
         onUpgrade(db, oldVersion, newVersion);
     }
 
-    public boolean insertNotes(String title, String note, Date date) {
+    public boolean insertNote(String title, String note, Date date) {
         SQLiteDatabase db = getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(NoteDB.NoteEntry.COLUMN_NAME_NOTE_ID, _id);
@@ -56,6 +55,7 @@ public class NoteDBHelper extends SQLiteOpenHelper {
         contentValues.put(NoteDB.NoteEntry.COLUMN_NAME_NOTE, note);
         contentValues.put(NoteDB.NoteEntry.COLUMN_NAME_NOTE_TITLE, title);
         contentValues.put(NoteDB.NoteEntry.COLUMN_NAME_TIMESTAMP, date.toString());
+        db.insert(NoteDB.NoteEntry.TABLE_NAME, null, contentValues);
         return true;
     }
 
@@ -72,7 +72,10 @@ public class NoteDBHelper extends SQLiteOpenHelper {
     public Cursor getNote(int id) {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor res = db.rawQuery("SELECT * FROM " + NoteDB.NoteEntry.TABLE_NAME + " WHERE " +
-                NoteDB.NoteEntry.COLUMN_NAME_NOTE_ID + "=?", new String[] {Integer.toString(id)});
+                NoteDB.NoteEntry.COLUMN_NAME_NOTE_ID + "= ?", new String[] {Integer.toString(id)});
+        if (res != null) {
+            res.moveToFirst();
+        }
         return res;
     }
 
