@@ -1,12 +1,20 @@
 package cs.comp2100.edu.au.takeit.app;
 
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
+import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
 import android.text.TextWatcher;
+import android.text.style.ImageSpan;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,6 +26,8 @@ public class Note extends AppCompatActivity {
     protected boolean saved;
     protected EditText txtTitle;
     protected EditText txtNote;
+
+    private static int RESULT_LOAD_IMAGE = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,10 +87,21 @@ public class Note extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_save) {
+            saved = true;
+            return true;
+        } else if (id == R.id.action_discard) {
+            return true;
+        } else if(id == R.id.action_attach_image) {
+            Intent browseImage = new Intent(
+                    Intent.ACTION_PICK,
+                    android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+
+            startActivityForResult(browseImage, RESULT_LOAD_IMAGE);
             return true;
         }
 
-        return super.onOptionsItemSelected(item);
+
+    return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -107,6 +128,45 @@ public class Note extends AppCompatActivity {
             dialog.create().show();
         }
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK && null != data) {
+            Uri selectedImage = data.getData();
+            String[] filePathColumn = {MediaStore.Images.Media.DATA};
+
+            Cursor cursor = getContentResolver().query(selectedImage,
+                    filePathColumn, null, null, null);
+            cursor.moveToFirst();
+
+            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+            String picturePath = cursor.getString(columnIndex);
+            cursor.close();
+
+            Drawable image = new BitmapDrawable(getResources(), picturePath);
+            addImageBetweenText(image);
+//            txtNote.setCompoundDrawablesWithIntrinsicBounds(0, 0, image, 0);
+
+
+//            ImageView imageView = (ImageView) findViewById(R.id.imgView);
+//            imageView.setImageBitmap(BitmapFactory.decodeFile(picturePath));
+        }
+    }
+
+    private void addImageBetweenText(Drawable drawable) {
+        drawable .setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
+
+        int selectionCursor = txtNote.getSelectionStart();
+        txtNote.getText().insert(selectionCursor, ".");
+        selectionCursor = txtNote.getSelectionStart();
+
+        SpannableStringBuilder builder = new SpannableStringBuilder(txtNote.getText());
+        builder.setSpan(new ImageSpan(drawable), selectionCursor - ".".length(), selectionCursor,                                                   Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        txtNote.setText(builder);
+        txtNote.setSelection(selectionCursor);
     }
 
     private void save(View view) {

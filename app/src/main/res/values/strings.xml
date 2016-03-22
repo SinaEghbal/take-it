@@ -6,4 +6,6 @@
     <string name="title_activity_note">Note</string>
     <string name="search">Search</string>
     <string name="action_save">Save</string>
+    <string name="action_discard_note">Discard</string>
+    <string name="action_attach_image">Attach Image</string>
 </resources>
