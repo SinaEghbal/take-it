@@ -65,7 +65,7 @@ public class NoteDBHelper extends SQLiteOpenHelper {
         contentValues.put(NoteDB.NoteEntry.COLUMN_NAME_NOTE, note);
         contentValues.put(NoteDB.NoteEntry.COLUMN_NAME_NOTE_TITLE, title);
         contentValues.put(NoteDB.NoteEntry.COLUMN_NAME_TIMESTAMP, new Date().toString());
-        db.update(NoteDB.NoteEntry.TABLE_NAME, contentValues, NoteDB.NoteEntry.COLUMN_NAME_NOTE_ID + " = ? ", new String[] {Integer.toString(_id)});
+        db.update(NoteDB.NoteEntry.TABLE_NAME, contentValues, NoteDB.NoteEntry.COLUMN_NAME_NOTE_ID + " = ? ", new String[] {Integer.toString(id)});
         return true;
     }
 
@@ -82,11 +82,11 @@ public class NoteDBHelper extends SQLiteOpenHelper {
     public Cursor getAllNotes() {
         System.out.println("get all notes");
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor res = db.rawQuery("SELECT * FROM " + NoteDB.NoteEntry.TABLE_NAME, null);
+        Cursor res = db.rawQuery("SELECT * FROM " + NoteDB.NoteEntry.TABLE_NAME + " ORDER BY " + NoteDB.NoteEntry.COLUMN_NAME_TIMESTAMP + " DESC", null);
         return res;
     }
 
-    public Integer deleteNotes(Integer id) {
+    public Integer deleteNote(Integer id) {
         SQLiteDatabase db = this.getWritableDatabase();
         return db.delete(NoteDB.NoteEntry.TABLE_NAME, NoteDB.NoteEntry.COLUMN_NAME_NOTE_ID + " = ? ",
                 new String[] {Integer.toString(id)});
