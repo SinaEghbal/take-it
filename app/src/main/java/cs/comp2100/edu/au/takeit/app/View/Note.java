@@ -25,6 +25,8 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+import cs.comp2100.edu.au.takeit.app.Model.NoteDB;
+import cs.comp2100.edu.au.takeit.app.Model.NoteDBHelper;
 import cs.comp2100.edu.au.takeit.app.R;
 
 import java.io.File;
@@ -38,6 +40,8 @@ public class Note extends AppCompatActivity {
     protected boolean saved;
     protected EditText txtTitle;
     protected EditText txtNote;
+    protected int id;
+    protected NoteDBHelper noteDBHelper;
 
     private static int RESULT_LOAD_IMAGE = 1;
     final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 100;
@@ -49,16 +53,26 @@ public class Note extends AppCompatActivity {
         saved = true;
         txtTitle = (EditText) findViewById(R.id.title_text);
         txtNote = (EditText) findViewById(R.id.note_text);
+        noteDBHelper = new NoteDBHelper(this);
+
+        if (getIntent().getExtras() == null) {
+//        if (savedInstanceState == null) {
+            id = -1;
+//            Toast.makeText(getApplicationContext(), "new", Toast.LENGTH_LONG).show();
+        } else {
+            id = getIntent().getExtras().getInt("id");
+            Cursor cursor = noteDBHelper.getNote(id);
+            cursor.moveToFirst();
+            txtNote.setText(cursor.getString(cursor.getColumnIndex(NoteDB.NoteEntry.COLUMN_NAME_NOTE)));
+            txtTitle.setText(cursor.getString(cursor.getColumnIndex(NoteDB.NoteEntry.COLUMN_NAME_NOTE_TITLE)));
+//            Toast.makeText(getApplicationContext(), "update", Toast.LENGTH_LONG).show();
+        }
         txtNote.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
 
             @Override
             public void afterTextChanged(Editable s) {
@@ -68,14 +82,10 @@ public class Note extends AppCompatActivity {
 
         txtTitle.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
 
             @Override
             public void afterTextChanged(Editable s) {
@@ -100,6 +110,12 @@ public class Note extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_save) {
+//            if (id == -1) {
+//                noteDBHelper.insertNote(txtTitle.getText().toString(), txtNote.getText().toString(), new Date());
+//            } else {
+//                noteDBHelper.updateNote(id,txtTitle.getText().toString(),txtNote.getText().toString());
+//            }
+            save(getCurrentFocus().getRootView());
             saved = true;
             return true;
         } else if (id == R.id.action_discard) {
@@ -148,10 +164,6 @@ public class Note extends AppCompatActivity {
         if (type == 1){
             mediaFile = new File(mediaStorageDir.getPath() + File.separator +
                     "IMG_"+ timeStamp + ".jpg");
-//        }
-// else if(type == 2) {
-//            mediaFile = new File(mediaStorageDir.getPath() + File.separator +
-//                    "VID_"+ timeStamp + ".mp4");
         } else {
             return null;
         }
@@ -176,7 +188,8 @@ public class Note extends AppCompatActivity {
             dialog.setNegativeButton("Save", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    Toast.makeText(getApplicationContext(), "saveee", Toast.LENGTH_LONG).show();
+//                    Toast.makeText(getApplicationContext(), "saveee", Toast.LENGTH_LONG).show();
+                    save(getWindow().getDecorView().getRootView());
                 }
             });
             dialog.setCancelable(true);
@@ -243,6 +256,12 @@ public class Note extends AppCompatActivity {
     }
 
     private void save(View view) {
+        if (id == -1) {
+            noteDBHelper.insertNote(txtTitle.getText().toString(), txtNote.getText().toString(), new Date());
+        } else {
+            noteDBHelper.updateNote(id,txtTitle.getText().toString(),txtNote.getText().toString());
+        }
+        saved = true;
         InputMethodManager inputManager = (InputMethodManager) getSystemService(this.INPUT_METHOD_SERVICE);
         inputManager.hideSoftInputFromWindow(view.getWindowToken(),
                 InputMethodManager.RESULT_UNCHANGED_SHOWN);

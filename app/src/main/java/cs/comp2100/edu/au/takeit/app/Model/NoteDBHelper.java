@@ -43,6 +43,7 @@ public class NoteDBHelper extends SQLiteOpenHelper {
         db.execSQL(SQL_DELETE_ENTRIES);
         onCreate(db);
     }
+
     public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         onUpgrade(db, oldVersion, newVersion);
     }
@@ -80,9 +81,17 @@ public class NoteDBHelper extends SQLiteOpenHelper {
     }
 
     public Cursor getAllNotes() {
-        System.out.println("get all notes");
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor res = db.rawQuery("SELECT * FROM " + NoteDB.NoteEntry.TABLE_NAME + " ORDER BY " + NoteDB.NoteEntry.COLUMN_NAME_TIMESTAMP + " DESC", null);
+        return res;
+    }
+
+    public Cursor search(String keyword) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor res = db.rawQuery("SELECT * FROM " + NoteDB.NoteEntry.TABLE_NAME + " WHERE " +
+                NoteDB.NoteEntry.COLUMN_NAME_NOTE_TITLE + " LIKE %" + keyword + "%) UNION SELECT * FROM " +
+                NoteDB.NoteEntry.TABLE_NAME + " WHERE " + NoteDB.NoteEntry.COLUMN_NAME_NOTE +
+                " LIKE %" + keyword + "%)", null);
         return res;
     }
 
