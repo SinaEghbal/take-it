@@ -1,7 +1,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
       xmlns:app="http://schemas.android.com/apk/res-auto"
       xmlns:tools="http://schemas.android.com/tools"
-      tools:context="cs.comp2100.edu.au.takeit.app.Note">
+      tools:context="cs.comp2100.edu.au.takeit.app.View.Note">
     <item android:id="@+id/action_save"
           android:title="@string/action_save"
           android:orderInCategory="100"
@@ -13,5 +13,9 @@
     <item android:id="@+id/action_attach_image"
           android:title="@string/action_attach_image"
           android:orderInCategory="70"
+          app:showAsAction="ifRoom" />
+    <item android:id="@+id/action_take_photo"
+          android:title="@string/action_take_photo"
+          android:orderInCategory="60"
           app:showAsAction="ifRoom" />
 </menu>
