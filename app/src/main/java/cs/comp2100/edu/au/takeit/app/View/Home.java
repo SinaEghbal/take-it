@@ -100,25 +100,35 @@ public class Home extends AppCompatActivity {
             final LayoutInflater inflator = (LayoutInflater) this .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             View v = inflator.inflate(R.layout.search_layout, null);
 
-            EditText txt_search = (EditText) v.findViewById(R.id.txt_search);
-            txt_search.addTextChangedListener(new TextWatcher() {
+            final EditText txt_search = (EditText) v.findViewById(R.id.txt_search);
+            txt_search.setOnEditorActionListener(new TextView.OnEditorActionListener() {
                 @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-                }
-
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-                }
-
-                @Override
-                public void afterTextChanged(Editable s) {
-//                    if (s.length()>0 && s.subSequence(s.length()-1, s.length()).toString().equalsIgnoreCase("\n")) {
-                        Toast.makeText(getApplicationContext(), s.toString(),Toast.LENGTH_SHORT).show();
-//                    }
+                public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                    Cursor res = dbHelper.search(txt_search.getText().toString());
+                    if (res.getCount() == 0) Toast.makeText(getApplicationContext(), "Nothing found!",
+                            Toast.LENGTH_SHORT).show();
+                    populateListView(dbHelper.search(txt_search.getText().toString()));
+                    return false;
                 }
             });
+//            txt_search.addTextChangedListener(new TextWatcher() {
+//                @Override
+//                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+//
+//                }
+//
+//                @Override
+//                public void onTextChanged(CharSequence s, int start, int before, int count) {
+//
+//                }
+//
+//                @Override
+//                public void afterTextChanged(Editable s) {
+////                    if (s.length()>0 && s.subSequence(s.length()-1, s.length()).toString().equalsIgnoreCase("\n")) {
+//                        Toast.makeText(getApplicationContext(), s.toString(),Toast.LENGTH_SHORT).show();
+////                    }
+//                }
+//            });
 
             getSupportActionBar().setDisplayShowCustomEnabled(true);
             getSupportActionBar().setCustomView(v);

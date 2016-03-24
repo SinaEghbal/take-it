@@ -82,9 +82,6 @@ public class NoteDBHelper extends SQLiteOpenHelper {
         if (res != null) {
             res.moveToFirst();
         }
-//        a = DatabaseUtils.dumpCurrentRowToString(res);
-//        res = getAllNotes();
-//        a = DatabaseUtils.dumpCurrentRowToString(res);
         return res;
     }
 
@@ -97,9 +94,9 @@ public class NoteDBHelper extends SQLiteOpenHelper {
     public Cursor search(String keyword) {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor res = db.rawQuery("SELECT * FROM " + NoteDB.NoteEntry.TABLE_NAME + " WHERE " +
-                NoteDB.NoteEntry.COLUMN_NAME_NOTE_TITLE + " LIKE %" + keyword + "%) UNION SELECT * FROM " +
+                NoteDB.NoteEntry.COLUMN_NAME_NOTE_TITLE + " LIKE '%" + keyword + "%' UNION SELECT * FROM " +
                 NoteDB.NoteEntry.TABLE_NAME + " WHERE " + NoteDB.NoteEntry.COLUMN_NAME_NOTE +
-                " LIKE %" + keyword + "%)", null);
+                " LIKE '%" + keyword + "%'", null);
         return res;
     }
 
