@@ -82,9 +82,9 @@ public class NoteDBHelper extends SQLiteOpenHelper {
         if (res != null) {
             res.moveToFirst();
         }
-        a = DatabaseUtils.dumpCurrentRowToString(res);
-        res = getAllNotes();
-        a = DatabaseUtils.dumpCurrentRowToString(res);
+//        a = DatabaseUtils.dumpCurrentRowToString(res);
+//        res = getAllNotes();
+//        a = DatabaseUtils.dumpCurrentRowToString(res);
         return res;
     }
 

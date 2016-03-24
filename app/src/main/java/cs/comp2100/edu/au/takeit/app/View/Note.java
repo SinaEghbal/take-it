@@ -36,7 +36,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Note extends AppCompatActivity {
-    private static final int MEDIA_TYPE_IMAGE = 1;
+//    private static final int MEDIA_TYPE_IMAGE = 1;
     protected boolean saved;
     protected EditText txtTitle;
     protected EditText txtNote;
