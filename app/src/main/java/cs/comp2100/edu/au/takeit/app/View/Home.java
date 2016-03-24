@@ -12,6 +12,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.*;
 import android.widget.*;
+import cs.comp2100.edu.au.takeit.app.DBAdapter.CustomAdapter;
 import cs.comp2100.edu.au.takeit.app.Model.NoteDB;
 import cs.comp2100.edu.au.takeit.app.Model.NoteDBHelper;
 import cs.comp2100.edu.au.takeit.app.R;
@@ -38,6 +39,11 @@ public class Home extends AppCompatActivity {
         context = this;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        populateListView(dbHelper.getAllNotes());
+    }
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         if (v.getId() == R.id.note_list) {
@@ -143,7 +149,7 @@ public class Home extends AppCompatActivity {
                 R.id.note_body
         };
 
-        CursorAdapter adapter = new SimpleCursorAdapter(
+        CursorAdapter adapter = new CustomAdapter(
                 getBaseContext(), R.layout.note_in_list, query, columns, widgets, 0);
 
         note_list = (ListView) findViewById(R.id.note_list);

@@ -3,10 +3,12 @@ package cs.comp2100.edu.au.takeit.app.Model;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import java.util.Date;
+import java.util.Random;
 
 /**
  * Created by Sina on 16/03/2016.
@@ -15,6 +17,7 @@ public class NoteDBHelper extends SQLiteOpenHelper {
     public static int _id;
     public static final int DATABASE_VERSION = 1;
     public static final String DATABASE_NAME = "Notes.db";
+    public static final Random idGenerator = new Random();
 
     private static final String TEXT_TYPE = " TEXT";
     private static final String INT_TYPE = "INTEGER";
@@ -51,8 +54,8 @@ public class NoteDBHelper extends SQLiteOpenHelper {
     public boolean insertNote(String title, String note, Date date) {
         SQLiteDatabase db = getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put(NoteDB.NoteEntry.COLUMN_NAME_NOTE_ID, _id);
-        _id++;
+        contentValues.put(NoteDB.NoteEntry.COLUMN_NAME_NOTE_ID, idGenerator.nextInt(100000));
+//        _id++;
         contentValues.put(NoteDB.NoteEntry.COLUMN_NAME_NOTE, note);
         contentValues.put(NoteDB.NoteEntry.COLUMN_NAME_NOTE_TITLE, title);
         contentValues.put(NoteDB.NoteEntry.COLUMN_NAME_TIMESTAMP, date.toString());
@@ -74,9 +77,14 @@ public class NoteDBHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor res = db.rawQuery("SELECT * FROM " + NoteDB.NoteEntry.TABLE_NAME + " WHERE " +
                 NoteDB.NoteEntry.COLUMN_NAME_NOTE_ID + "= ?", new String[] {Integer.toString(id)});
+        String a = DatabaseUtils.dumpCursorToString(res);
+
         if (res != null) {
             res.moveToFirst();
         }
+        a = DatabaseUtils.dumpCurrentRowToString(res);
+        res = getAllNotes();
+        a = DatabaseUtils.dumpCurrentRowToString(res);
         return res;
     }
 

@@ -56,9 +56,7 @@ public class Note extends AppCompatActivity {
         noteDBHelper = new NoteDBHelper(this);
 
         if (getIntent().getExtras() == null) {
-//        if (savedInstanceState == null) {
             id = -1;
-//            Toast.makeText(getApplicationContext(), "new", Toast.LENGTH_LONG).show();
         } else {
             id = getIntent().getExtras().getInt("id");
             Cursor cursor = noteDBHelper.getNote(id);
@@ -190,6 +188,7 @@ public class Note extends AppCompatActivity {
                 public void onClick(DialogInterface dialog, int which) {
 //                    Toast.makeText(getApplicationContext(), "saveee", Toast.LENGTH_LONG).show();
                     save(getWindow().getDecorView().getRootView());
+                    finish();
                 }
             });
             dialog.setCancelable(true);
