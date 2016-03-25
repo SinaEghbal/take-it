@@ -50,8 +50,7 @@ public class NoteDBHelperObject extends SQLiteOpenHelper {
     public boolean insertNote(String title, String note, Date date) {
         SQLiteDatabase db = getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put(NoteDB.NoteEntry.COLUMN_NAME_NOTE_ID, _id);
-        _id++;
+        contentValues.put(NoteDB.NoteEntry.COLUMN_NAME_NOTE_ID, _id++);
         contentValues.put(NoteDB.NoteEntry.COLUMN_NAME_NOTE, note);
         contentValues.put(NoteDB.NoteEntry.COLUMN_NAME_NOTE_TITLE, title);
         contentValues.put(NoteDB.NoteEntry.COLUMN_NAME_TIMESTAMP, date.toString());
@@ -82,7 +81,7 @@ public class NoteDBHelperObject extends SQLiteOpenHelper {
     public Cursor getAllNotes() {
         System.out.println("get all notes");
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor res = db.rawQuery("SELECT * FROM " + NoteDB.NoteEntry.TABLE_NAME + " ORDER BY " + NoteDB.NoteEntry.COLUMN_NAME_TIMESTAMP + " DESC", null);
+        Cursor res = db.rawQuery("SELECT * FROM " + NoteDB.NoteEntry.TABLE_NAME, null);// + " ORDER BY " + NoteDB.NoteEntry.COLUMN_NAME_TIMESTAMP + " DESC", null);
         return res;
     }
 
