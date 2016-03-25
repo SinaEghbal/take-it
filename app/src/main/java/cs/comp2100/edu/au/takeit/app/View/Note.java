@@ -23,6 +23,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.net.Uri;
+import android.widget.Toast;
 import cs.comp2100.edu.au.takeit.app.DBAdapter.Serialize;
 import cs.comp2100.edu.au.takeit.app.Model.NoteDB;
 import cs.comp2100.edu.au.takeit.app.Model.NoteDBHelper;
@@ -43,7 +44,6 @@ public class Note extends AppCompatActivity {
     protected EditText txtTitle;
     protected EditText txtNote;
     protected int id;
-    protected int img_id = 0;
     protected NoteDBHelper noteDBHelper;
 
     private static int RESULT_LOAD_IMAGE = 1;
@@ -125,32 +125,29 @@ public class Note extends AppCompatActivity {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
+//        int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_save) {
-            if (id == -1) {
-                noteDBHelper.insertNote(txtTitle.getText().toString(), txtNote.getText().toString(), new Date());
-            } else {
-                noteDBHelper.updateNote(id,txtTitle.getText().toString(),txtNote.getText().toString());
-            }
-            saved = true;
+        if (item.getItemId() == R.id.action_save) {
+            if (!saved)
+                try {
+                    save(getCurrentFocus().getRootView());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             return true;
-        } else if (id == R.id.action_discard) {
+        } else if (item.getItemId() == R.id.action_discard) {
             finish();
             return true;
-        } else if(id == R.id.action_attach_image) {
+        } else if(item.getItemId() == R.id.action_attach_image) {
             Intent browseImage = new Intent(
                     Intent.ACTION_PICK,
                     android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
 
             startActivityForResult(browseImage, RESULT_LOAD_IMAGE);
             return true;
-        } else if(id == R.id.action_take_photo) {
+        } else if(item.getItemId() == R.id.action_take_photo) {
             Intent takePhoto = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-
-//            Uri fileUri = Uri.fromFile(getOutputMediaFile(MEDIA_TYPE_IMAGE));
-//            takePhoto.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
             startActivityForResult(takePhoto, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
             return true;
         }
@@ -158,36 +155,6 @@ public class Note extends AppCompatActivity {
 
     return super.onOptionsItemSelected(item);
     }
-
-//    private static File getOutputMediaFile(int type){
-//        // To be safe, you should check that the SDCard is mounted
-//        // using Environment.getExternalStorageState() before doing this.
-//
-//        File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(
-//                Environment.DIRECTORY_PICTURES), "Picture Note");
-//        // This location works best if you want the created images to be shared
-//        // between applications and persist after your app has been uninstalled.
-//
-//        // Create the storage directory if it does not exist
-//        if (! mediaStorageDir.exists()){
-//            if (! mediaStorageDir.mkdirs()){
-//                Log.d("Picture Note", "failed to create directory");
-//                return null;
-//            }
-//        }
-//
-//        // Create a media file name
-//        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-//        File mediaFile;
-//        if (type == 1){
-//            mediaFile = new File(mediaStorageDir.getPath() + File.separator +
-//                    "IMG_"+ timeStamp + ".jpg");
-//        } else {
-//            return null;
-//        }
-//
-//        return mediaFile;
-//    }
 
     @Override
     public void onBackPressed() {
@@ -206,12 +173,17 @@ public class Note extends AppCompatActivity {
             dialog.setNegativeButton("Save", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-//                    Toast.makeText(getApplicationContext(), "saveee", Toast.LENGTH_LONG).show();
                     try {
-                        save(getWindow().getDecorView().getRootView());
+                        save(getCurrentFocus().getRootView());
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
+//                        if (id == -1) {
+//                            noteDBHelper.insertNote(txtTitle.getText().toString(), txtNote.getText().toString(), new Date());
+//                        } else {
+//                            noteDBHelper.updateNote(id,txtTitle.getText().toString(), txtNote.getText().toString());
+//                        }
+//                        saved = true;
                     finish();
                 }
             });
@@ -226,18 +198,6 @@ public class Note extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK && null != data) {
-//            Uri selectedImage = data.getData();
-//            String[] filePathColumn = {MediaStore.Images.Media.DATA};
-//
-//            Cursor cursor = getContentResolver().query(selectedImage,
-//                    filePathColumn, null, null, null);
-//            cursor.moveToFirst();
-//
-//            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-//            String picturePath = cursor.getString(columnIndex);
-//            cursor.close();
-//
-//            Drawable image = new BitmapDrawable(getResources(), picturePath);
             try {
                 addImageBetweenText(data.getData());
             } catch (FileNotFoundException e) {
@@ -245,25 +205,17 @@ public class Note extends AppCompatActivity {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-//            txtNote.setCompoundDrawablesWithIntrinsicBounds(0, 0, image, 0);
 
-
-//            ImageView imageView = (ImageView) findViewById(R.id.imgView);
-//            imageView.setImageBitmap(BitmapFactory.decodeFile(picturePath));
         } else if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
                 try {
-//                    InputStream inputStream = getContentResolver().openInputStream(data.getData());
-//                    Drawable image = Drawable.createFromStream(inputStream, "camera");
-//                    addImageBetweenText(image);
                     addImageBetweenText(data.getData());
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-//                Drawable image = new BitmapDrawable(getResources(), data.getData());
-//                        data.getData(), Toast.LENGTH_LONG).show();
+
             } else if (resultCode == RESULT_CANCELED) {
                 // User cancelled the image capture
             } else {
@@ -274,26 +226,6 @@ public class Note extends AppCompatActivity {
 
 
     private void addImageBetweenText(Uri data) throws IOException {
-
-//        String[] filePathColumn = {MediaStore.Images.Media.DATA};
-
-//        Cursor cursor = getContentResolver().query(data,
-//                filePathColumn, null, null, null);
-//        cursor.moveToFirst();
-//
-//        int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-//        String picturePath = cursor.getString(columnIndex);
-//        cursor.close();
-
-//
-//        String a = data.toString();
-//        Drawable image = Drawable.createFromPath(data.toString());//new BitmapDrawable(getResources(), picturePath);
-//        a = data.getScheme();
-
-//        Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), data);
-
-//        Uri a = Uri.parse(data.toString());
-//        String a = data.toString();
         InputStream inputStream = getContentResolver().openInputStream(data);
         Drawable drawable = Drawable.createFromStream(inputStream, "camera");
 
@@ -313,42 +245,6 @@ public class Note extends AppCompatActivity {
         txtNote.setSelection(selStart);
   }
 
-//    private void addImageBetweenText(Drawable drawable, Uri data) {
-////        editText = (EditText)mRoot.findViewById(R.id.content);
-//        drawable .setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
-//        ImageSpan imageSpan = new ImageSpan(drawable);
-//
-//        SpannableStringBuilder builder = new SpannableStringBuilder();
-//        builder.append(txtNote.getText());
-//
-//// this is a string that will let you find a place, where the ImageSpan is.
-//        String imgId = "[img="+img_id++ +"]";
-//
-//        int selStart = txtNote.getSelectionStart();
-//
-//// current selection is replaceв with imageId
-////        String a = drawable.toString();
-//        builder.replace(txtNote.getSelectionStart(), txtNote.getSelectionEnd(), data.toString());
-////        builder.replace(txtNote.getSelectionStart(), txtNote.getSelectionEnd(), (CharSequence) drawable);
-//
-//
-//// This adds a span to display image where the imageId is. If you do builder.toString() - the string will contain imageId where the imageSpan is.
-//// you can yse this later - if you want to location of imageSpan in text;
-//        builder.setSpan(imageSpan, selStart, selStart + imgId.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-//        txtNote.setText(builder);
-//        txtNote.setSelection(selStart);
-////        drawable .setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
-////
-////        int selectionCursor = txtNote.getSelectionStart();
-////        txtNote.getText().insert(selectionCursor, "build/intermediates/exploded-aar/com.android.support/support-vector-drawable/24.0.0-alpha1/res");
-////        selectionCursor = txtNote.getSelectionStart();
-////
-////        SpannableStringBuilder builder = new SpannableStringBuilder(txtNote.getText());
-////        builder.setSpan(new ImageSpan(drawable), selectionCursor - "build/intermediates/exploded-aar/com.android.support/support-vector-drawable/24.0.0-alpha1/res".length(), selectionCursor,                                                   Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-////        txtNote.setText(builder);
-////        txtNote.setSelection(selectionCursor);
-//    }
-
     private void save(View view) throws IOException {
         if (id == -1) {
             noteDBHelper.insertNote(txtTitle.getText().toString(), txtNote.getText().toString(), new Date());
@@ -356,6 +252,7 @@ public class Note extends AppCompatActivity {
             noteDBHelper.updateNote(id,txtTitle.getText().toString(), txtNote.getText().toString());
         }
         saved = true;
+        Toast.makeText(getApplicationContext(), "saved", Toast.LENGTH_SHORT).show();
         InputMethodManager inputManager = (InputMethodManager) getSystemService(this.INPUT_METHOD_SERVICE);
         inputManager.hideSoftInputFromWindow(view.getWindowToken(),
                 InputMethodManager.RESULT_UNCHANGED_SHOWN);
