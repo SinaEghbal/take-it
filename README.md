@@ -16,16 +16,16 @@ organise your notes.
 The MyDiary app consists of 3 main classess to handle the different tasks. In
 what follows, we will explain the abstract design of our MyDiary app.
 
-0. Home: Home class is associated with our homescreen. Homescreen id the first activity which will be open when we open the app. Homescreen contains a list which contains all the notes by default. It also lets us search through our notes. It will also let us to choose a note, view, edit or delete it.
+1. Home: Home class is associated with our homescreen. Homescreen id the first activity which will be open when we open the app. Homescreen contains a list which contains all the notes by default. It also lets us search through our notes. It will also let us to choose a note, view, edit or delete it.
 
 ![TakeIt Home screen, associated with our Home class.](images/search.png)
 
-1. Note: This class takes care of storing and fetching all the fields in a note in addition to
+2. Note: This class takes care of storing and fetching all the fields in a note in addition to
 letting us add, modify and delete our notes. Using this class we can also attach the existing photos or take new photos and attach them to our notes.
 
 ![Note screen, a note containing a photo.](images/note.png)
 
-2. DBHelper: This class contains all the required queries and scripts to create, maintain and query from our database. This class will be instantiated in both our Home and Note class and we use it for all our queries and data modifications.
+3. DBHelper: This class contains all the required queries and scripts to create, maintain and query from our database. This class will be instantiated in both our Home and Note class and we use it for all our queries and data modifications.
 
 ### Features
 
