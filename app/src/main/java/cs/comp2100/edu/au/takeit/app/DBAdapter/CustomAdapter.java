@@ -25,9 +25,14 @@ public class CustomAdapter extends SimpleCursorAdapter {
         title.setText(titleString);
 
         TextView note = (TextView) view.findViewById((R.id.note_body));
-        String noteString = cursor.getString(cursor.getColumnIndex(NoteDB.NoteEntry.COLUMN_NAME_NOTE));
+        StringBuilder noteString = new StringBuilder();
+        noteString.append(cursor.getString(cursor.getColumnIndex(NoteDB.NoteEntry.COLUMN_NAME_NOTE)));
+        while (noteString.toString().contains("[image]")) {
+            noteString.replace(noteString.indexOf("[image]"),noteString.indexOf("[\\image]") + 8, "<image>");
+        }
         if (noteString.length() >= 25)
-            noteString = noteString.substring(0,25) + "...";
-        note.setText(noteString);
+            noteString.replace(25, noteString.length(), "...");
+//            noteString = noteString.substring(0,25) + "...";
+        note.setText(noteString.toString());
     }
 }
