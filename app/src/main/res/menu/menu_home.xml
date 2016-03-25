@@ -1,0 +1,12 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item android:id="@+id/action_add_note"
+          android:title="@string/add_note"
+          android:orderInCategory="100"
+          app:showAsAction="ifRoom"/>
+    <item android:id="@+id/action_search"
+          android:title="@string/search"
+          android:orderInCategory="90"
+          android:actionLayout="@layout/search_layout"
+          app:showAsAction="never"/>
+</menu>

@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">Take It</string>
+
+    <string name="hello_world">Take It ;)</string>
+    <string name="add_note">Add Note</string>
+    <string name="title_activity_note">Note</string>
+    <string name="search">Search</string>
+    <string name="action_save">Save</string>
+    <string name="action_discard_note">Discard</string>
+    <string name="action_attach_image">Attach Image</string>
+    <string name="action_take_photo">Take Photo</string>
+</resources>
