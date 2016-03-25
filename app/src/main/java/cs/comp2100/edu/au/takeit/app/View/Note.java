@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Environment;
@@ -69,18 +70,19 @@ public class Note extends AppCompatActivity {
                 int start = note.indexOf("[image]");
                 int end = note.indexOf("[\\image]");
 
-                txtNote.setText(note.substring(0, start));
+                txtNote.append(note.substring(0, start));
                 String data = note.substring(start + 7, end);
                 Uri d = Uri.parse(data);
                 try {
                     addImageBetweenText(d);
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
                 note.replace(0,end+8, "");
             }
-            txtNote.setText(cursor.getString(cursor.getColumnIndex(NoteDB.NoteEntry.COLUMN_NAME_NOTE)));
-            txtNote.setText(note.toString());
+            txtNote.append(note.toString());
             txtTitle.setText(cursor.getString(cursor.getColumnIndex(NoteDB.NoteEntry.COLUMN_NAME_NOTE_TITLE)));
 //            Toast.makeText(getApplicationContext(), "update", Toast.LENGTH_LONG).show();
         }
@@ -157,35 +159,35 @@ public class Note extends AppCompatActivity {
     return super.onOptionsItemSelected(item);
     }
 
-    private static File getOutputMediaFile(int type){
-        // To be safe, you should check that the SDCard is mounted
-        // using Environment.getExternalStorageState() before doing this.
-
-        File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(
-                Environment.DIRECTORY_PICTURES), "MyCameraApp");
-        // This location works best if you want the created images to be shared
-        // between applications and persist after your app has been uninstalled.
-
-        // Create the storage directory if it does not exist
-        if (! mediaStorageDir.exists()){
-            if (! mediaStorageDir.mkdirs()){
-                Log.d("MyCameraApp", "failed to create directory");
-                return null;
-            }
-        }
-
-        // Create a media file name
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        File mediaFile;
-        if (type == 1){
-            mediaFile = new File(mediaStorageDir.getPath() + File.separator +
-                    "IMG_"+ timeStamp + ".jpg");
-        } else {
-            return null;
-        }
-
-        return mediaFile;
-    }
+//    private static File getOutputMediaFile(int type){
+//        // To be safe, you should check that the SDCard is mounted
+//        // using Environment.getExternalStorageState() before doing this.
+//
+//        File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(
+//                Environment.DIRECTORY_PICTURES), "Picture Note");
+//        // This location works best if you want the created images to be shared
+//        // between applications and persist after your app has been uninstalled.
+//
+//        // Create the storage directory if it does not exist
+//        if (! mediaStorageDir.exists()){
+//            if (! mediaStorageDir.mkdirs()){
+//                Log.d("Picture Note", "failed to create directory");
+//                return null;
+//            }
+//        }
+//
+//        // Create a media file name
+//        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+//        File mediaFile;
+//        if (type == 1){
+//            mediaFile = new File(mediaStorageDir.getPath() + File.separator +
+//                    "IMG_"+ timeStamp + ".jpg");
+//        } else {
+//            return null;
+//        }
+//
+//        return mediaFile;
+//    }
 
     @Override
     public void onBackPressed() {
@@ -240,6 +242,8 @@ public class Note extends AppCompatActivity {
                 addImageBetweenText(data.getData());
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
 //            txtNote.setCompoundDrawablesWithIntrinsicBounds(0, 0, image, 0);
 
@@ -248,14 +252,14 @@ public class Note extends AppCompatActivity {
 //            imageView.setImageBitmap(BitmapFactory.decodeFile(picturePath));
         } else if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
-                // Image captured and saved to fileUri specified in the Intent
-//                Toast.makeText(this, "Image saved to:\n" +
                 try {
-                    InputStream inputStream = getContentResolver().openInputStream(data.getData());
-                    Drawable image = Drawable.createFromStream(inputStream, "camera");
+//                    InputStream inputStream = getContentResolver().openInputStream(data.getData());
+//                    Drawable image = Drawable.createFromStream(inputStream, "camera");
 //                    addImageBetweenText(image);
                     addImageBetweenText(data.getData());
                 } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
                     e.printStackTrace();
                 }
 //                Drawable image = new BitmapDrawable(getResources(), data.getData());
@@ -269,23 +273,31 @@ public class Note extends AppCompatActivity {
     }
 
 
-    private void addImageBetweenText(Uri data) throws FileNotFoundException {
+    private void addImageBetweenText(Uri data) throws IOException {
 
-        String[] filePathColumn = {MediaStore.Images.Media.DATA};
+//        String[] filePathColumn = {MediaStore.Images.Media.DATA};
 
-        Cursor cursor = getContentResolver().query(data,
-                filePathColumn, null, null, null);
-        cursor.moveToFirst();
+//        Cursor cursor = getContentResolver().query(data,
+//                filePathColumn, null, null, null);
+//        cursor.moveToFirst();
+//
+//        int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+//        String picturePath = cursor.getString(columnIndex);
+//        cursor.close();
 
-        int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-        String picturePath = cursor.getString(columnIndex);
-        cursor.close();
+//
+//        String a = data.toString();
+//        Drawable image = Drawable.createFromPath(data.toString());//new BitmapDrawable(getResources(), picturePath);
+//        a = data.getScheme();
 
-        Drawable image = new BitmapDrawable(getResources(), picturePath);
+//        Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), data);
 
+//        Uri a = Uri.parse(data.toString());
+//        String a = data.toString();
         InputStream inputStream = getContentResolver().openInputStream(data);
         Drawable drawable = Drawable.createFromStream(inputStream, "camera");
 
+//        Drawable drawable = new BitmapDrawable(getResources(), bitmap);
         drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
         ImageSpan imageSpan = new ImageSpan(drawable);
 

@@ -76,7 +76,7 @@ public class Home extends AppCompatActivity {
         }
     }
 
-        @Override
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_home, menu);
         return true;
