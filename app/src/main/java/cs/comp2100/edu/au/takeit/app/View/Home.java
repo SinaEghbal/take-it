@@ -111,28 +111,9 @@ public class Home extends AppCompatActivity {
                     return false;
                 }
             });
-//            txt_search.addTextChangedListener(new TextWatcher() {
-//                @Override
-//                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-//
-//                }
-//
-//                @Override
-//                public void onTextChanged(CharSequence s, int start, int before, int count) {
-//
-//                }
-//
-//                @Override
-//                public void afterTextChanged(Editable s) {
-////                    if (s.length()>0 && s.subSequence(s.length()-1, s.length()).toString().equalsIgnoreCase("\n")) {
-//                        Toast.makeText(getApplicationContext(), s.toString(),Toast.LENGTH_SHORT).show();
-////                    }
-//                }
-//            });
 
             getSupportActionBar().setDisplayShowCustomEnabled(true);
             getSupportActionBar().setCustomView(v);
-
         }
 
         return super.onOptionsItemSelected(item);

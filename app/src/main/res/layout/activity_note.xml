@@ -19,6 +19,7 @@
                 android:id="@+id/title_text"
                 android:textStyle="bold"
                 android:hint="Title"
+                android:imeOptions="actionNext"
                 android:gravity="top|left"/>
         <!--<Button-->
                 <!--style="?android:attr/buttonStyleSmall"-->
