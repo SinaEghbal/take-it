@@ -29,6 +29,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Date;
 
+/*This class handles whatever happens in the note class.*/
 public class Note extends AppCompatActivity {
 
     protected boolean saved;
@@ -49,6 +50,7 @@ public class Note extends AppCompatActivity {
         txtNote = (EditText) findViewById(R.id.note_text);
         noteDBHelper = new NoteDBHelper(this);
 
+        /*Checks whether we have a new note or we're calling an existing note.*/
         if (getIntent().getExtras() == null) {
             id = -1;
         } else {
@@ -76,6 +78,8 @@ public class Note extends AppCompatActivity {
             txtNote.append(note.toString());
             txtTitle.setText(cursor.getString(cursor.getColumnIndex(NoteDB.NoteEntry.COLUMN_NAME_NOTE_TITLE)));
         }
+
+        /*Change the saved flag to false if the note or its title are changed.*/
         txtNote.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
@@ -117,7 +121,6 @@ public class Note extends AppCompatActivity {
         // as you specify a parent activity in AndroidManifest.xml.
 //        int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (item.getItemId() == R.id.action_save) {
             if (!saved)
                 try {
@@ -141,8 +144,6 @@ public class Note extends AppCompatActivity {
             startActivityForResult(takePhoto, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
             return true;
         }
-
-
     return super.onOptionsItemSelected(item);
     }
 
@@ -177,6 +178,7 @@ public class Note extends AppCompatActivity {
 
     }
 
+    /*The method that is being called after capturing a photo or loading it from the memory*/
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -203,12 +205,12 @@ public class Note extends AppCompatActivity {
             } else if (resultCode == RESULT_CANCELED) {
                 // User cancelled the image capture
             } else {
-                // Image capture failed, advise user
+                // Image capture failed!!!
             }
         }
     }
 
-
+    /*Gets a URI and insert the image at its location to the EditText.*/
     private void addImageBetweenText(Uri data) throws IOException {
         InputStream inputStream = getContentResolver().openInputStream(data);
         Drawable drawable = Drawable.createFromStream(inputStream, "camera");
@@ -228,6 +230,7 @@ public class Note extends AppCompatActivity {
         txtNote.setSelection(selStart);
   }
 
+    /*saves the note. This can be either saving a new note or updating an existing note.*/
     private void save(View view) throws IOException {
         if (id == -1) {
             noteDBHelper.insertNote(txtTitle.getText().toString(), txtNote.getText().toString(), new Date());

@@ -16,6 +16,8 @@ public class CustomAdapter extends SimpleCursorAdapter {
         super(context, layout, c, from, to, flags);
     }
 
+    /*Puts different fields (namely title and note) of each record into the appropriate TextView. Cuts the long
+    * Strings and changes the uris with a single <image> tag for the list_item layout.*/
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
         TextView title = (TextView) view.findViewById(R.id.note_title);
@@ -32,7 +34,6 @@ public class CustomAdapter extends SimpleCursorAdapter {
         }
         if (noteString.length() >= 25)
             noteString.replace(25, noteString.length(), "...");
-//            noteString = noteString.substring(0,25) + "...";
         note.setText(noteString.toString());
     }
 }

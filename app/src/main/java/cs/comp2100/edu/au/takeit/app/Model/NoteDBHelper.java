@@ -51,11 +51,11 @@ public class NoteDBHelper extends SQLiteOpenHelper {
         onUpgrade(db, oldVersion, newVersion);
     }
 
+    /*Inserts notes into our database.*/
     public boolean insertNote(String title, String note, Date date) {
         SQLiteDatabase db = getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(NoteDB.NoteEntry.COLUMN_NAME_NOTE_ID, idGenerator.nextInt(100000));
-//        _id++;
         contentValues.put(NoteDB.NoteEntry.COLUMN_NAME_NOTE, note);
         contentValues.put(NoteDB.NoteEntry.COLUMN_NAME_NOTE_TITLE, title);
         contentValues.put(NoteDB.NoteEntry.COLUMN_NAME_TIMESTAMP, date.toString());
@@ -63,6 +63,8 @@ public class NoteDBHelper extends SQLiteOpenHelper {
         return true;
     }
 
+    /*
+    *updates the notes using their id.*/
     public boolean updateNote(int id, String title, String note) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -73,24 +75,25 @@ public class NoteDBHelper extends SQLiteOpenHelper {
         return true;
     }
 
+    /*gets the notes.*/
     public Cursor getNote(int id) {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor res = db.rawQuery("SELECT * FROM " + NoteDB.NoteEntry.TABLE_NAME + " WHERE " +
                 NoteDB.NoteEntry.COLUMN_NAME_NOTE_ID + "= ?", new String[] {Integer.toString(id)});
-        String a = DatabaseUtils.dumpCursorToString(res);
-
         if (res != null) {
             res.moveToFirst();
         }
         return res;
     }
 
+    /*Fetches all the notes from the database.*/
     public Cursor getAllNotes() {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor res = db.rawQuery("SELECT * FROM " + NoteDB.NoteEntry.TABLE_NAME + " ORDER BY " + NoteDB.NoteEntry.COLUMN_NAME_TIMESTAMP + " DESC", null);
         return res;
     }
 
+    /*Given a keyboard, this method will return all the notes contataining it it their title or body.*/
     public Cursor search(String keyword) {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor res = db.rawQuery("SELECT * FROM " + NoteDB.NoteEntry.TABLE_NAME + " WHERE " +
@@ -100,6 +103,7 @@ public class NoteDBHelper extends SQLiteOpenHelper {
         return res;
     }
 
+    /*Deletes the node with the given id from our database.*/
     public Integer deleteNote(Integer id) {
         SQLiteDatabase db = this.getWritableDatabase();
         return db.delete(NoteDB.NoteEntry.TABLE_NAME, NoteDB.NoteEntry.COLUMN_NAME_NOTE_ID + " = ? ",

@@ -14,9 +14,10 @@ import cs.comp2100.edu.au.takeit.app.Model.NoteDB;
 import cs.comp2100.edu.au.takeit.app.Model.NoteDBHelper;
 import cs.comp2100.edu.au.takeit.app.R;
 
+/*This class handles our home activity (main and first page of our app), and everything that is being done under that activity.*/
 public class Home extends AppCompatActivity {
-    ListView note_list;
-    boolean search_mode;
+    ListView noteList;
+    boolean searchMode;
     NoteDBHelper dbHelper;
     Context context;
 
@@ -25,9 +26,9 @@ public class Home extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         dbHelper = new NoteDBHelper(this);
-        note_list = (ListView) findViewById(R.id.note_list);
-        registerForContextMenu(note_list);
-        search_mode = false;
+        noteList = (ListView) findViewById(R.id.note_list);
+        registerForContextMenu(noteList);
+        searchMode = false;
         populateListView(dbHelper.getAllNotes());
         context = this;
     }
@@ -37,6 +38,15 @@ public class Home extends AppCompatActivity {
         super.onResume();
         populateListView(dbHelper.getAllNotes());
     }
+
+    /*Inflates the actionbar into our layout.*/
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_home, menu);
+        return true;
+    }
+
+    /*Assigns the appropriate actions to context menu options.*/
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         if (v.getId() == R.id.note_list) {
@@ -75,12 +85,7 @@ public class Home extends AppCompatActivity {
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_home, menu);
-        return true;
-    }
-
+    /*Manages the actions done through the menu in the action bar.*/
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
@@ -89,18 +94,18 @@ public class Home extends AppCompatActivity {
             startActivity(new Intent(getApplicationContext(), Note.class));
             return true;
         } else if (id == R.id.action_search) {
-            search_mode = true;
+            searchMode = true;
             final LayoutInflater inflator = (LayoutInflater) this .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             View v = inflator.inflate(R.layout.search_layout, null);
 
-            final EditText txt_search = (EditText) v.findViewById(R.id.txt_search);
-            txt_search.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            final EditText txtSearch = (EditText) v.findViewById(R.id.txt_search);
+            txtSearch.setOnEditorActionListener(new TextView.OnEditorActionListener() {
                 @Override
                 public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                    Cursor res = dbHelper.search(txt_search.getText().toString());
+                    Cursor res = dbHelper.search(txtSearch.getText().toString());
                     if (res.getCount() == 0) Toast.makeText(getApplicationContext(), "Nothing found!",
                             Toast.LENGTH_SHORT).show();
-                    populateListView(dbHelper.search(txt_search.getText().toString()));
+                    populateListView(dbHelper.search(txtSearch.getText().toString()));
                     return false;
                 }
             });
@@ -112,17 +117,20 @@ public class Home extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    /*Actions for the back button dialog.*/
     @Override
     public void onBackPressed() {
-        if (search_mode) {
+        if (searchMode) {
             getSupportActionBar().setDisplayShowCustomEnabled(false);
             getSupportActionBar().setDisplayShowTitleEnabled(true);
-            search_mode = false;
+            searchMode = false;
         } else {
             finish();
         }
     }
 
+    /*Populates the list of notes with the given query.
+    * The query can be either querying all the notes or notes containing the given keyboard.*/
     public void populateListView(Cursor query) {
         String [] columns = new String[] {
                 NoteDB.NoteEntry.COLUMN_NAME_NOTE_TITLE,
@@ -136,13 +144,13 @@ public class Home extends AppCompatActivity {
         CursorAdapter adapter = new CustomAdapter(
                 getBaseContext(), R.layout.note_in_list, query, columns, widgets, 0);
 
-        note_list = (ListView) findViewById(R.id.note_list);
-        note_list.setAdapter(adapter);
+        noteList = (ListView) findViewById(R.id.note_list);
+        noteList.setAdapter(adapter);
         adapter.notifyDataSetChanged();
-        note_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        noteList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Cursor noteCursor = (Cursor) Home.this.note_list.getItemAtPosition(position);
+                Cursor noteCursor = (Cursor) Home.this.noteList.getItemAtPosition(position);
                 int noteID = noteCursor.getInt(noteCursor.getColumnIndex(NoteDB.NoteEntry.COLUMN_NAME_NOTE_ID));
                 Intent goToNote = new Intent(getApplicationContext(), Note.class);
                 goToNote.putExtra("id", noteID);

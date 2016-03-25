@@ -13,21 +13,25 @@ organise your notes.
 
 ![MyDiary class diagram](images/MyDiary.png)
 
-The MyDiary app consists of 4 main classess to handle the different tasks. In
+The MyDiary app consists of 3 main classess to handle the different tasks. In
 what follows, we will explain the abstract design of our MyDiary app.
 
-1. Note: This class takes care of storing all the fields in a note in addition
-letting us add, modify and delete our notes.
+0. Home: Home class is associated with our homescreen. Homescreen id the first activity which will be open when we open the app. Homescreen contains a list which contains all the notes by default. It also lets us search through our notes. It will also let us to choose a note, view, edit or delete it.
 
-2. Picture: This is the class responsible for using the android camera service.
-Moreover, this class stores images and contains all the methods that our note
-application uses to manage the picture notes or notes that contain pictures.
+![TakeIt Home screen, associated with our Home class.](images/search.png)
 
-3. ViewNote: This is a subclass of the Activity class which provides the android
-GUI of our app. Simply saying, this class contains the front-end implementation
-for the view note section of our application.
+1. Note: This class takes care of storing and fetching all the fields in a note in addition to
+letting us add, modify and delete our notes. Using this class we can also attach the existing photos or take new photos and attach them to our notes.
 
-4. NoteEntry: Like the ViewNote class, this class is a subclass of the Activity
-class. It provides us with the front-end implementation of our note entry page
-which is used for entering and editing the notes.
+![Note screen, a note containing a photo.](images/note.png)
 
+2. DBHelper: This class contains all the required queries and scripts to create, maintain and query from our database. This class will be instantiated in both our Home and Note class and we use it for all our queries and data modifications.
+
+### Features
+
+0. Take, edit, delete notes
+1. Search for the notes whose titles or bodies contain a certain keyword.
+2. Supports landscape and portrait mode.
+3. Attaching existing images to the notes.
+4. Taking photos using phone's camera and attach it to our notes.
+5. Clicking and looking at the available options for each note.
