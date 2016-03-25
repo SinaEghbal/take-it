@@ -27,7 +27,6 @@ public class Home extends AppCompatActivity {
         dbHelper = new NoteDBHelper(this);
         note_list = (ListView) findViewById(R.id.note_list);
         registerForContextMenu(note_list);
-//        note_list.setOnItemClickListener(this);
         search_mode = false;
         populateListView(dbHelper.getAllNotes());
         context = this;

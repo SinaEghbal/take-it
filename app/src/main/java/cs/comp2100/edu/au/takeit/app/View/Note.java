@@ -4,10 +4,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -16,7 +13,6 @@ import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.TextWatcher;
 import android.text.style.ImageSpan;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -24,22 +20,17 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.net.Uri;
 import android.widget.Toast;
-import cs.comp2100.edu.au.takeit.app.DBAdapter.Serialize;
 import cs.comp2100.edu.au.takeit.app.Model.NoteDB;
 import cs.comp2100.edu.au.takeit.app.Model.NoteDBHelper;
 import cs.comp2100.edu.au.takeit.app.R;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Note extends AppCompatActivity {
-//    private static final int MEDIA_TYPE_IMAGE = 1;
+
     protected boolean saved;
     protected EditText txtTitle;
     protected EditText txtNote;
@@ -84,7 +75,6 @@ public class Note extends AppCompatActivity {
             }
             txtNote.append(note.toString());
             txtTitle.setText(cursor.getString(cursor.getColumnIndex(NoteDB.NoteEntry.COLUMN_NAME_NOTE_TITLE)));
-//            Toast.makeText(getApplicationContext(), "update", Toast.LENGTH_LONG).show();
         }
         txtNote.addTextChangedListener(new TextWatcher() {
             @Override
@@ -178,12 +168,6 @@ public class Note extends AppCompatActivity {
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-//                        if (id == -1) {
-//                            noteDBHelper.insertNote(txtTitle.getText().toString(), txtNote.getText().toString(), new Date());
-//                        } else {
-//                            noteDBHelper.updateNote(id,txtTitle.getText().toString(), txtNote.getText().toString());
-//                        }
-//                        saved = true;
                     finish();
                 }
             });
@@ -229,7 +213,6 @@ public class Note extends AppCompatActivity {
         InputStream inputStream = getContentResolver().openInputStream(data);
         Drawable drawable = Drawable.createFromStream(inputStream, "camera");
 
-//        Drawable drawable = new BitmapDrawable(getResources(), bitmap);
         drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
         ImageSpan imageSpan = new ImageSpan(drawable);
 
