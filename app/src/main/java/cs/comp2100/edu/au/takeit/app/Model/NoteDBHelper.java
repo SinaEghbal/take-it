@@ -14,7 +14,6 @@ import java.util.Random;
  * Created by Sina on 16/03/2016.
  */
 public class NoteDBHelper extends SQLiteOpenHelper {
-    public static int _id;
     public static final int DATABASE_VERSION = 1;
     public static final String DATABASE_NAME = "Notes.db";
     public static final Random idGenerator = new Random();
@@ -52,15 +51,16 @@ public class NoteDBHelper extends SQLiteOpenHelper {
     }
 
     /*Inserts notes into our database.*/
-    public boolean insertNote(String title, String note, Date date) {
+    public int insertNote(String title, String note, Date date) {
+        int id = idGenerator.nextInt(100000);
         SQLiteDatabase db = getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put(NoteDB.NoteEntry.COLUMN_NAME_NOTE_ID, idGenerator.nextInt(100000));
+        contentValues.put(NoteDB.NoteEntry.COLUMN_NAME_NOTE_ID, id);
         contentValues.put(NoteDB.NoteEntry.COLUMN_NAME_NOTE, note);
         contentValues.put(NoteDB.NoteEntry.COLUMN_NAME_NOTE_TITLE, title);
         contentValues.put(NoteDB.NoteEntry.COLUMN_NAME_TIMESTAMP, date.toString());
         db.insert(NoteDB.NoteEntry.TABLE_NAME, null, contentValues);
-        return true;
+        return id;
     }
 
     /*
