@@ -1,31 +1,24 @@
 package cs.comp2100.edu.au.takeit.app.Model;
 
 import android.database.Cursor;
-import android.test.ActivityInstrumentationTestCase2;
-import cs.comp2100.edu.au.takeit.app.View.Home;
-import junit.framework.TestCase;
+import android.test.AndroidTestCase;
+import android.test.RenamingDelegatingContext;
 
 import java.util.Date;
 
 /**
  * Created by Sina on 26/03/2016.
  */
-public class NoteDBHelperTest extends ActivityInstrumentationTestCase2<Home> {
+public class NoteDBHelperTest extends AndroidTestCase {
     NoteDBHelper dbHelper;
     int id;
     Cursor c;
     String title, note;
 
-    public NoteDBHelperTest(Class<NoteDBHelper> activityClass) {
-        super(activityClass);
-    }
-    public NoteDBHelperTest() {
-        super(NoteDBHelper.class);
-    }
-
     public void setUp() throws Exception {
         super.setUp();
-        dbHelper = new NoteDBHelper(this.getActivity().getApplicationContext());
+        RenamingDelegatingContext context = new RenamingDelegatingContext(getContext(), "test_");
+        dbHelper = new NoteDBHelper(context);
     }
 
     public void tearDown() throws Exception {
@@ -41,6 +34,7 @@ public class NoteDBHelperTest extends ActivityInstrumentationTestCase2<Home> {
 
     public void testGetNote() throws Exception {
         //Testing getNote method
+        id = dbHelper.insertNote("title", "note", new Date());
         c = dbHelper.getNote(id);
         title = c.getString(c.getColumnIndex(NoteDB.NoteEntry.COLUMN_NAME_NOTE_TITLE));
         note = c.getString(c.getColumnIndex(NoteDB.NoteEntry.COLUMN_NAME_NOTE));
@@ -50,6 +44,7 @@ public class NoteDBHelperTest extends ActivityInstrumentationTestCase2<Home> {
 
     public void testUpdateNote() throws Exception {
         //Testing updateNote method
+        id = dbHelper.insertNote("title", "note", new Date());
         dbHelper.updateNote(id, "updatedTitle", "updatedNote");
         c = dbHelper.getNote(id);
         title = c.getString(c.getColumnIndex(NoteDB.NoteEntry.COLUMN_NAME_NOTE_TITLE));
@@ -79,6 +74,9 @@ public class NoteDBHelperTest extends ActivityInstrumentationTestCase2<Home> {
 
     public void testDeleteNote() throws Exception {
         //Testing deleteNote method
+        id = dbHelper.insertNote("title", "note", new Date());
+        c = dbHelper.getAllNotes();
+        assertEquals(c.getCount(), 1);
         dbHelper.deleteNote(id);
         c = dbHelper.getAllNotes();
         assertEquals(c.getCount(), 0);
