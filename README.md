@@ -35,5 +35,6 @@ letting us add, modify and delete our notes. Using this class we can also attach
 1. Search for the notes whose titles or bodies contain a certain keyword.
 2. Supports landscape and portrait mode.
 3. Attaching existing images to the notes.
-4. Taking photos using phone's camera and attach it to our notes.
-5. Clicking and looking at the available options for each note.
+4. Taking photos using phone's camera and attach it to the notes.
+5. Share your notes through facebook, email, etc.
+6. Clicking and looking at the available options for each note.
