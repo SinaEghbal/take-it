@@ -20,12 +20,14 @@ what follows, we will explain the abstract design of our MyDiary app.
 
 ![TakeIt Home screen, associated with our Home class.](images/search.png)
 
+
 2. Note: This class takes care of storing and fetching all the fields in a note in addition to
 letting us add, modify and delete our notes. Using this class we can also attach the existing photos or take new photos and attach them to our notes.
 
 ![Note screen, a note containing a photo.](images/note.png)
 
-3. DBHelper: This class contains all the required queries and scripts to create, maintain and query from our database. This class will be instantiated in both our Home and Note class and we use it for all our queries and data modifications.
+
+3. DBHelper: This class contains all the required queries and scripts to create, maintain and query from our SQLite database. This class will be instantiated in both our Home and Note class and we use it for all our queries and data modifications.
 
 ### Features
 

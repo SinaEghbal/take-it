@@ -54,6 +54,17 @@ public class Home extends AppCompatActivity {
             AdapterView.AdapterContextMenuInfo acmi = (AdapterView.AdapterContextMenuInfo) menuInfo;
             Object obj =  lv.getItemAtPosition(acmi.position);
             final int _id = ((Cursor)obj).getInt(((Cursor)obj).getColumnIndex(NoteDB.NoteEntry.COLUMN_NAME_NOTE_ID));
+            menu.add(0, 0, 2, "Share").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                @Override
+                public boolean onMenuItemClick(MenuItem item) {
+                    Cursor note = dbHelper.getNote(_id);
+                    String title = note.getString(note.getColumnIndex(NoteDB.NoteEntry.COLUMN_NAME_NOTE_TITLE));
+                    String body = note.getString(note.getColumnIndex(NoteDB.NoteEntry.COLUMN_NAME_NOTE));
+                    startActivity(Intent.createChooser(Note.createShareIntent(title, body),"Share your note"));
+
+                    return false;
+                }
+            });
             menu.add(0,0,0,"Delete").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                 @Override
                 public boolean onMenuItemClick(MenuItem item) {

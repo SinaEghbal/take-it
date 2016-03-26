@@ -27,6 +27,7 @@ import cs.comp2100.edu.au.takeit.app.R;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Date;
 
 /*This class handles whatever happens in the note class.*/
@@ -143,6 +144,12 @@ public class Note extends AppCompatActivity {
             Intent takePhoto = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
             startActivityForResult(takePhoto, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
             return true;
+        } else if (item.getItemId() == R.id.action_share) {
+            try {
+                share(txtTitle.getText().toString(), txtNote.getText().toString());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     return super.onOptionsItemSelected(item);
     }
@@ -242,6 +249,30 @@ public class Note extends AppCompatActivity {
         InputMethodManager inputManager = (InputMethodManager) getSystemService(this.INPUT_METHOD_SERVICE);
         inputManager.hideSoftInputFromWindow(view.getWindowToken(),
                 InputMethodManager.RESULT_UNCHANGED_SHOWN);
+    }
+
+    /*Share the notes on your favorite social media or email.*/
+    public void share(String title, String note) throws IOException {
+        if (!saved) {
+            save(getCurrentFocus().getRootView());
+            Toast.makeText(getApplicationContext(), "Note saved", Toast.LENGTH_SHORT);
+        }
+        startActivity(Intent.createChooser(createShareIntent(title, note),"Share your note"));
+    }
+    public static Intent createShareIntent(String title, String note) {
+        Intent share = new Intent(Intent.ACTION_SEND_MULTIPLE);
+        share.setType("*/*");
+        share.putExtra(Intent.EXTRA_SUBJECT, title);
+        StringBuilder body = new StringBuilder().append(note);
+        ArrayList<Uri> images = new ArrayList<Uri>();
+        while (body.toString().contains("[image]")) {
+            Uri uri = Uri.parse(body.substring(body.indexOf("[image]")+7, body.indexOf("[\\image]")));
+            images.add(uri);
+            body.replace(body.indexOf("[image]"), body.indexOf("[\\image]")+8, "");
+        }
+        share.putParcelableArrayListExtra(Intent.EXTRA_STREAM, images);
+        share.putExtra(Intent.EXTRA_TEXT, body.toString());
+        return share;
     }
 
 }
