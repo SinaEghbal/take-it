@@ -11,10 +11,10 @@ organise your notes.
 
 ### Design
 
-![MyDiary class diagram](images/MyDiary.png)
+![TakeIt class diagram](images/MyDiary.png)
 
-The MyDiary app consists of 3 main classess to handle the different tasks. In
-what follows, we will explain the abstract design of our MyDiary app.
+The TakeIt app consists of 3 main classess to handle the different tasks. In
+what follows, we will explain the abstract design of the app.
 
 1. Home: Home class is associated with our homescreen. Homescreen id the first activity which will be open when we open the app. Homescreen contains a list which contains all the notes by default. It also lets us search through our notes. It will also let us to choose a note, view, edit or delete it.
 

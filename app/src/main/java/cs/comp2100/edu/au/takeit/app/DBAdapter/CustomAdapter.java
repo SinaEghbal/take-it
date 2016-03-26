@@ -34,6 +34,6 @@ public class CustomAdapter extends SimpleCursorAdapter {
         }
         if (noteString.length() >= 25)
             noteString.replace(25, noteString.length(), "...");
-        note.setText(noteString.toString());
+        note.setText(noteString.toString().replace("\n", " "));
     }
 }
