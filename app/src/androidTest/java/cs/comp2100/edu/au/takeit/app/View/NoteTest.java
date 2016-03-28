@@ -9,9 +9,7 @@ import android.widget.ListView;
 import cs.comp2100.edu.au.takeit.app.Model.NoteDB;
 import cs.comp2100.edu.au.takeit.app.Model.NoteDBHelper;
 import cs.comp2100.edu.au.takeit.app.R;
-
-import java.util.Date;
-import java.util.List;
+import junit.framework.Assert;
 
 /**
  * Created by Sina on 26/03/2016.
@@ -24,7 +22,8 @@ public class NoteTest extends ActivityInstrumentationTestCase2<Note> {
     EditText title;
     EditText body;
 
-//    public NoteTest(Class<Home> activityClass) {
+
+    //    public NoteTest(Class<Home> activityClass) {
 //        super(Home.class);
 //    }
     public NoteTest() {
@@ -50,7 +49,10 @@ public class NoteTest extends ActivityInstrumentationTestCase2<Note> {
         //Check if something happens without user notification.
         Cursor c = dbHelper.getAllNotes();
         title.append("a");
-        mActivity.onBackPressed();
+        getActivity().onBackPressed();
+        //Means my activity's not finished due to the fact that one of text boxes is changed and it prompts for user
+        //input whether to save or discard the note, or cancel the operation.
+        assertNotNull("my activity", mActivity);
         Cursor c2 = dbHelper.getAllNotes();
         assertEquals(c.getCount(), c2.getCount());
         while (c.moveToNext()) {
@@ -59,6 +61,15 @@ public class NoteTest extends ActivityInstrumentationTestCase2<Note> {
                     c2.getString(c2.getColumnIndex(NoteDB.NoteEntry.COLUMN_NAME_NOTE_TITLE)));
             assertEquals(c.getString(c.getColumnIndex(NoteDB.NoteEntry.COLUMN_NAME_NOTE)),
                     c2.getString(c2.getColumnIndex(NoteDB.NoteEntry.COLUMN_NAME_NOTE)));
+        }
+        /*Activity should be finished after pressing back button on a fully saved note*/
+        getActivity().save(getActivity().getWindow().getDecorView());
+        try {
+            getActivity().onBackPressed();
+            Assert.fail("IllegalStatement because of Junit super. It implies that is has saved the note and would have" +
+                    "exited the activity.");
+        } catch (IllegalStateException e) {
+            mActivity.finish();
         }
     }
 }

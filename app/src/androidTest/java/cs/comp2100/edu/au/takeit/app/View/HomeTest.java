@@ -24,7 +24,6 @@ import java.util.Date;
 public class HomeTest extends ActivityInstrumentationTestCase2<Home> {
 
     Activity nActivity;
-//    Home home;
     Cursor cursor;
     NoteDBHelper db;
     ListView notes;
@@ -50,18 +49,24 @@ public class HomeTest extends ActivityInstrumentationTestCase2<Home> {
     @UiThreadTest
     public void testPopulateListView() throws Exception {
 //        ListView notes = (ListView) nActivity.findViewById(R.id.note_list);
+        //Checking list view and the populateListView method with different db operations which were previously tested.
         assertNotNull("unloaded list", notes);
+        String[] n = {};
+        db.getWritableDatabase().delete(NoteDB.NoteEntry.TABLE_NAME, "", n);
         cursor = db.getAllNotes();
-        do {
-            db.deleteNote(cursor.getInt(cursor.getColumnIndex(NoteDB.NoteEntry.COLUMN_NAME_NOTE_ID)));
-        } while (cursor.moveToNext());
+        getActivity().populateListView(cursor);
+        int a = notes.getCount();
+        assertEquals(notes.getCount(), 0);
         db.insertNote("t","b", new Date());
+        cursor = db.getAllNotes();
         getActivity().populateListView(cursor);
         assertEquals(notes.getCount(),1);
         int id = db.insertNote("t","b", new Date());
+        cursor = db.getAllNotes();
         getActivity().populateListView(cursor);
         assertEquals(notes.getCount(),2);
         db.deleteNote(id);
+        cursor = db.getAllNotes();
         getActivity().populateListView(cursor);
         assertEquals(notes.getCount(),1);
     }

@@ -38,3 +38,18 @@ letting us add, modify and delete our notes. Using this class we can also attach
 4. Taking photos using phone's camera and attach it to the notes.
 5. Share your notes through facebook, email, etc.
 6. Clicking and looking at the available options for each note.
+7. Speech recognition
+
+### Testing Summary
+
+The three main classes are application are tested using JUnit, AndroidTestCase and ActivityInstrumentationTest2.
+
+The Database queries and statements are all tested seperately in the DBHelperTest. Since database is the only data repository of our app, validating it let us to test the rest of our application as a blackbox.
+
+The integration tests were done by testing are two main activities 'Note' and 'Home'.
+
+For the Home class, our tests mostly focused on the functionality of our listview and in particular its real-time updates with the alternation of data. Different operations were done and the functionality of our main ListView is tested. Some operations such as invoking the "Note" activity was not tested using Junit, but tested by dozens of users due to UX issues and getting actual feedback.
+
+For the Note class, a major part of the test was done by asking actual users for feedbacks. However, the functionality of the backbutton and the save method is fully tested.
+
+Visual and Auditory features of our app such as inserting images, using the camera and speech recognition are all tested from the UI due to their nature.
