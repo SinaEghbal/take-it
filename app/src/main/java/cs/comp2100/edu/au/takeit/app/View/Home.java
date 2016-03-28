@@ -19,7 +19,7 @@ public class Home extends AppCompatActivity {
     ListView noteList;
     boolean searchMode;
     NoteDBHelper dbHelper;
-    Context context;
+    public Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

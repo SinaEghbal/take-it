@@ -1,11 +1,13 @@
 package cs.comp2100.edu.au.takeit.app.View;
 
 import android.app.AlertDialog;
+import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.drawable.Drawable;
 import android.provider.MediaStore;
+import android.speech.RecognizerIntent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
@@ -29,10 +31,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Locale;
 
 /*This class handles whatever happens in the note class.*/
 public class Note extends AppCompatActivity {
 
+    private static final int SPEECH_RECOGNITION_REQ = 50;
     protected boolean saved;
     protected EditText txtTitle;
     protected EditText txtNote;
@@ -150,8 +154,19 @@ public class Note extends AppCompatActivity {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        } else if (item.getItemId() == R.id.action_voice_recognition) {
+            startVoiceRecognition();
         }
     return super.onOptionsItemSelected(item);
+    }
+
+    /*Implementation for the voice recognition feature which transcribes the human voice.*/
+    private void startVoiceRecognition() {
+        Intent voiceRecognitionIntent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+        voiceRecognitionIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+        voiceRecognitionIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
+        voiceRecognitionIntent.putExtra(RecognizerIntent.EXTRA_PROMPT, getString(R.string.speech_prompt));
+        startActivityForResult(voiceRecognitionIntent, SPEECH_RECOGNITION_REQ);
     }
 
     @Override
@@ -212,6 +227,17 @@ public class Note extends AppCompatActivity {
                 // User cancelled the image capture
             } else {
                 // Image capture failed!!!
+            }
+        } else if (requestCode == SPEECH_RECOGNITION_REQ) {
+            if (resultCode == RESULT_OK) {
+                ArrayList<String> recognizedSpeech = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+                StringBuilder sb = new StringBuilder().append(" ");
+                for (int i = 0; i < recognizedSpeech.size(); i++) {
+                    sb.append(recognizedSpeech.get(i) + " ");
+                }
+                txtNote.append(sb.toString());
+            } else {
+                //Well, results is not ok!!!
             }
         }
     }
