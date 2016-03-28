@@ -1,3 +1,8 @@
+/*
+ * 2016.
+ *  The content of this site is licensed under the Creative Commons Apache License 2.0.
+ */
+
 package cs.comp2100.edu.au.takeit.app.Model;
 
 import android.content.ContentValues;
@@ -11,7 +16,7 @@ import java.util.Date;
 import java.util.Random;
 
 /**
- * Created by Sina on 16/03/2016.
+ * Created by Sina Eghbal on 16/03/2016.
  */
 public class NoteDBHelper extends SQLiteOpenHelper {
     public static final int DATABASE_VERSION = 1;

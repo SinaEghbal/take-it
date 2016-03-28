@@ -14,6 +14,12 @@ import cs.comp2100.edu.au.takeit.app.Model.NoteDB;
 import cs.comp2100.edu.au.takeit.app.Model.NoteDBHelper;
 import cs.comp2100.edu.au.takeit.app.R;
 
+/*
+ * 2016.
+ *  The content of this site is licensed under the Creative Commons Apache License 2.0.
+ *  * Created by Sina Eghbal on 18/03/2016.
+ */
+
 /*This class handles our home activity (main and first page of our app), and everything that is being done under that activity.*/
 public class Home extends AppCompatActivity {
     ListView noteList;

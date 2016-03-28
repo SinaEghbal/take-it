@@ -1,3 +1,8 @@
+/*
+ * 2016.
+ *  The content of this site is licensed under the Creative Commons Apache License 2.0.
+ */
+
 package cs.comp2100.edu.au.takeit.app.DBAdapter;
 
 import android.content.Context;
@@ -9,7 +14,7 @@ import cs.comp2100.edu.au.takeit.app.Model.NoteDB;
 import cs.comp2100.edu.au.takeit.app.R;
 
 /**
- * Created by Sina on 24/03/2016.
+ * Created by Sina Eghbal on 24/03/2016.
  */
 public class CustomAdapter extends SimpleCursorAdapter {
     public CustomAdapter(Context context, int layout, Cursor c, String[] from, int[] to, int flags) {
