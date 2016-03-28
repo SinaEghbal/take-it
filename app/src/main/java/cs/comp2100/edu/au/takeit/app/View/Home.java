@@ -120,7 +120,6 @@ public class Home extends AppCompatActivity {
                     return false;
                 }
             });
-
             getSupportActionBar().setDisplayShowCustomEnabled(true);
             getSupportActionBar().setCustomView(v);
         }

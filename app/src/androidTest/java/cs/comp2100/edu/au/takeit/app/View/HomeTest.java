@@ -1,9 +1,13 @@
 package cs.comp2100.edu.au.takeit.app.View;
 
+import android.app.Activity;
+import android.content.ClipData;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.test.ActivityInstrumentationTestCase2;
+import android.test.UiThreadTest;
+import android.view.MenuItem;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import cs.comp2100.edu.au.takeit.app.Model.NoteDBHelper;
@@ -21,21 +25,27 @@ public class HomeTest extends ActivityInstrumentationTestCase2<Home> {
     Cursor cursor;
     NoteDBHelper db;
     ListView notes;
+    Activity nActivity;
 
     public HomeTest(Class activityClass) {
         super(activityClass);
+    }
+    public HomeTest() {
+        super(Home.class);
     }
 
     public void setUp() throws Exception {
         super.setUp();
         home = new Home();
         notes = (ListView) getActivity().findViewById(R.id.note_list);
+        nActivity = this.getActivity();
     }
 
     public void tearDown() throws Exception {
 
     }
 
+    @UiThreadTest
     public void testPopulateListView() throws Exception {
         ListView notes = (ListView) home.findViewById(R.id.note_list);
         assertNotNull("unloaded list", notes);

@@ -3,6 +3,7 @@ package cs.comp2100.edu.au.takeit.app.View;
 import android.app.Activity;
 import android.database.Cursor;
 import android.test.ActivityInstrumentationTestCase2;
+import android.test.UiThreadTest;
 import android.widget.EditText;
 import android.widget.ListView;
 import cs.comp2100.edu.au.takeit.app.Model.NoteDB;
@@ -15,31 +16,38 @@ import java.util.List;
 /**
  * Created by Sina on 26/03/2016.
  */
-public class NoteTest extends ActivityInstrumentationTestCase2<Home> {
+public class NoteTest extends ActivityInstrumentationTestCase2<Note> {
 
     Activity mActivity;
     ListView notes;
     NoteDBHelper dbHelper;
+    EditText title;
+    EditText body;
 
-    public NoteTest(Class<Home> activityClass) {
-        super(Home.class);
+//    public NoteTest(Class<Home> activityClass) {
+//        super(Home.class);
+//    }
+    public NoteTest() {
+        super(Note.class);
     }
 
     public void setUp() throws Exception {
         super.setUp();
         mActivity = this.getActivity();
         notes = (ListView) mActivity.findViewById(R.id.note_list);
-        dbHelper = new NoteDBHelper(this.getActivity().context);
+        dbHelper = new NoteDBHelper(this.getActivity().getApplicationContext());
+        title = (EditText) mActivity.findViewById(R.id.title_text);
+        body = (EditText) mActivity.findViewById(R.id.note_text);
     }
 
     public void testEmptyList() {
-        assertNotNull(notes);
+        //Test whether the list is empty or not
+        assertNull(notes);
     }
 
+    @UiThreadTest
     public void testOnBackPressed() throws Exception {
         //Check if something happens without user notification.
-        EditText title = (EditText) mActivity.findViewById(R.id.title_text);
-        EditText body = (EditText) mActivity.findViewById(R.id.note_text);
         Cursor c = dbHelper.getAllNotes();
         title.append("a");
         mActivity.onBackPressed();

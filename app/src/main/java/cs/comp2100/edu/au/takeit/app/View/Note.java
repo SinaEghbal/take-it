@@ -182,7 +182,6 @@ public class Note extends AppCompatActivity {
             dialog.setCancelable(true);
             dialog.create().show();
         }
-
     }
 
     /*The method that is being called after capturing a photo or loading it from the memory*/
@@ -218,7 +217,7 @@ public class Note extends AppCompatActivity {
     }
 
     /*Gets a URI and insert the image at its location to the EditText.*/
-    private void addImageBetweenText(Uri data) throws IOException {
+    public void addImageBetweenText(Uri data) throws IOException {
         InputStream inputStream = getContentResolver().openInputStream(data);
         Drawable drawable = Drawable.createFromStream(inputStream, "camera");
 
@@ -237,8 +236,8 @@ public class Note extends AppCompatActivity {
         txtNote.setSelection(selStart);
   }
 
-    /*saves the note. This can be either saving a new note or updating an existing note.*/
-    private void save(View view) throws IOException {
+    /*Saves the note. This can be either saving a new note or updating an existing note.*/
+    public void save(View view) throws IOException {
         if (id == -1) {
             noteDBHelper.insertNote(txtTitle.getText().toString(), txtNote.getText().toString(), new Date());
         } else {
@@ -259,6 +258,9 @@ public class Note extends AppCompatActivity {
         }
         startActivity(Intent.createChooser(createShareIntent(title, note),"Share your note"));
     }
+
+    /*Creates a share intent which is being used by the share function when we are sharing a note.
+    * Also parses the body of our note to look for image tags and pass them as images if found.*/
     public static Intent createShareIntent(String title, String note) {
         Intent share = new Intent(Intent.ACTION_SEND_MULTIPLE);
         share.setType("*/*");
