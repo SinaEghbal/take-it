@@ -26,4 +26,8 @@
           android:title="Voice Recognition"
           android:orderInCategory="40"
           app:showAsAction="never" />
+    <item android:id="@+id/action_get_and_change_colour"
+          android:title = "Colour ;)"
+          android:orderInCategory="30"
+          app:showAsAction="never" />
 </menu>

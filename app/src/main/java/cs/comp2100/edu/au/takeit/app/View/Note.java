@@ -12,6 +12,7 @@ import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.provider.MediaStore;
 import android.speech.RecognizerIntent;
@@ -60,6 +61,9 @@ public class Note extends AppCompatActivity {
         saved = true;
         txtTitle = (EditText) findViewById(R.id.title_text);
         txtNote = (EditText) findViewById(R.id.note_text);
+//        setBackgroundColor(getResources().getColor(R.color.rojo));
+//        txtNote.setBackgroundResource(R.color.abc_primary_text_material_light);
+//        txtNote.setBackgroundColor(R.color.secondary_text_default_material_dark);
         noteDBHelper = new NoteDBHelper(this);
 
         /*Checks whether we have a new note or we're calling an existing note.*/
@@ -88,6 +92,7 @@ public class Note extends AppCompatActivity {
                 note.replace(0,end+8, "");
             }
             txtNote.append(note.toString());
+//            txtNote.setBackgroundColor(Color.RED);
             txtTitle.setText(cursor.getString(cursor.getColumnIndex(NoteDB.NoteEntry.COLUMN_NAME_NOTE_TITLE)));
         }
 
@@ -163,6 +168,24 @@ public class Note extends AppCompatActivity {
             }
         } else if (item.getItemId() == R.id.action_voice_recognition) {
             startVoiceRecognition();
+        } else if (item.getItemId() == R.id.action_get_and_change_colour) {
+            String note = txtNote.getText().toString();
+            String[] colour = {"red", "green", "blue"};
+            for (String current_colour: colour) {
+                if (note.contains(current_colour)) {
+                    if (current_colour == "blue") {
+                        txtNote.setBackgroundColor(Color.BLUE);
+                    } else if (current_colour == "green") {
+                        txtNote.setBackgroundColor(Color.GREEN);
+
+                    } else if (current_colour == "red") {
+                        txtNote.setBackgroundColor(Color.RED);
+                    } else {
+
+                    }
+                }
+            }
+
         }
     return super.onOptionsItemSelected(item);
     }

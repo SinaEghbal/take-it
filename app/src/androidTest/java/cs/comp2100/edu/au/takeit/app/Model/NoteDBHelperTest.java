@@ -29,7 +29,7 @@ public class NoteDBHelperTest extends AndroidTestCase {
     public void tearDown() throws Exception {
         //Gets rid of the traces of our test on the database.
         dbHelper.getWritableDatabase().rawQuery("DELETE FROM " + NoteDB.NoteEntry.TABLE_NAME,null);
-    }
+    }†
 
     public void testInsertNote() throws Exception {
         //Testing note insertion
