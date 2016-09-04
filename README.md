@@ -1,12 +1,12 @@
-# MyDiary
+# TakeIT
 ## An app which takes care of all your notes
 
-### What is MyDiary
+### What is TakeIt
 
-MyDiary is a note-taking app for android platform which lets you take care of
+TakeIt is a note-taking app for android platform which lets you take care of
 all your notes.
 
-Using MyDiary, you can write text notes, edit them, take picture notes and
+Using TakeIt, you can write text notes, edit them, take picture notes and
 organise your notes.
 
 ### Design
